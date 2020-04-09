@@ -2,7 +2,7 @@
 
 Data -> enwiki-20200401-pages-articles.xml.bz2
 
-Spark base job to transform xml based data from wikipedia file.
+Spark based job to transform wikipedia xml file.
 
 Overrride config file:
   -Dconfig.file=path/to/config-file
