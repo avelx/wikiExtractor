@@ -31,7 +31,13 @@ object WikiExtractor {
       .getOrCreate()
 
     try {
-      spark.sparkContext.hadoopConfiguration.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem")
+      spark.sparkContext
+        .hadoopConfiguration.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem")
+
+      spark.sparkContext
+        .hadoopConfiguration.set("fs.hdfs.impl", "org.apache.hadoop.hdfs.DistributedFileSystem")
+
+      //conf.set("fs.hdfs.impl", classOf[org.apache.hadoop.hdfs.DistributedFileSystem].getName)
 
       logger.info("Read XML")
 
@@ -42,9 +48,10 @@ object WikiExtractor {
 
       logger.info("Write to DataStore")
 
-      // re-partition by timestamp && write to datastore
+      // re-partition data
       df
-          .repartition( col("revision.timestamp") )
+          //.repartition( col("revision.timestamp") )
+          .repartition(30)
         .write.parquet(dataStore)
 
     } catch {
