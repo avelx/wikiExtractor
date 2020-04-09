@@ -37,8 +37,6 @@ object WikiExtractor {
       spark.sparkContext
         .hadoopConfiguration.set("fs.hdfs.impl", "org.apache.hadoop.hdfs.DistributedFileSystem")
 
-      //conf.set("fs.hdfs.impl", classOf[org.apache.hadoop.hdfs.DistributedFileSystem].getName)
-
       logger.info("Read XML")
 
       val df = spark.read
