@@ -1,43 +1,51 @@
 package com.avel.data
 
-import org.apache.log4j.Logger
-
 object WikiExtractor {
 
+  import org.apache.log4j.Logger
   import org.apache.spark.SparkConf
   import com.typesafe.config.ConfigFactory
   import org.apache.spark.sql.SparkSession
   import com.databricks.spark.xml._
+  import org.apache.spark.sql.functions.{col, udf}
 
   def main(args: Array[String]): Unit = {
 
     val logger = Logger.getLogger(this.getClass.getName)
 
     val appConfig = ConfigFactory.load()
-    val xmlFile: String = "/mnt/diska/enwiki-20200401-pages-articles.xml"
-    logger.info(s"FILE NAME: $xmlFile")
+
+    val source: String = appConfig.getString("dataSource.file")
+    val dataStore = appConfig.getString("dataStore.file")
+
+    logger.info(s"FILE NAME: $source")
 
     val conf = new SparkConf()
-      .setMaster("local[8]")
+      .setMaster("local[*]")
       .setAppName("WikiPedia")
 
     val spark = SparkSession
       .builder()
-      .appName("Article Extractor")
+      .appName("ArticleExtractor")
       .config(conf)
       .getOrCreate()
 
     try {
       spark.sparkContext.hadoopConfiguration.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem")
 
+      logger.info("Read XML")
+
       val df = spark.read
         .format("xml")
         .option("rowTag", "page")
-        .xml(xmlFile)
+        .xml(source)
 
-      df.show(10)
+      logger.info("Write to DataStore")
 
-      df.printSchema()
+      // re-partition by timestamp && write to datastore
+      df
+          .repartition( col("revision.timestamp") )
+        .write.parquet(dataStore)
 
     } catch {
       case ex: Throwable => {
