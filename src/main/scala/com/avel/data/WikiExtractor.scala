@@ -1,42 +1,22 @@
 package com.avel.data
 
-object WikiExtractor {
+import com.databricks.spark.xml._
+//import org.apache.spark.sql.functions.{col, udf}
+import com.avel.data.spark.BaseSpark
 
-  import org.apache.log4j.Logger
-  import org.apache.spark.SparkConf
-  import com.typesafe.config.ConfigFactory
-  import org.apache.spark.sql.SparkSession
-  import com.databricks.spark.xml._
-  import org.apache.spark.sql.functions.{col, udf}
+class WikiExtractor extends BaseSpark {
 
-  def main(args: Array[String]): Unit = {
+  def exec(block : () => Unit ): Unit = {
+    val start = System.nanoTime()
+    logger.info(s"Start time: $start")
+    block()
+    val end = System.nanoTime()
+    logger.info(s"End time: $end")
+    logger.info(s"Execution time: ${end - start}")
+  }
 
-    val logger = Logger.getLogger(this.getClass.getName)
-
-    val appConfig = ConfigFactory.load()
-
-    val source: String = appConfig.getString("dataSource.file")
-    val dataStore = appConfig.getString("dataStore.file")
-
-    logger.info(s"FILE NAME: $source")
-
-    val conf = new SparkConf()
-      .setMaster("local[*]")
-      .setAppName("WikiPedia")
-
-    val spark = SparkSession
-      .builder()
-      .appName("ArticleExtractor")
-      .config(conf)
-      .getOrCreate()
-
+  def job() : Unit = {
     try {
-      spark.sparkContext
-        .hadoopConfiguration.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem")
-
-      spark.sparkContext
-        .hadoopConfiguration.set("fs.hdfs.impl", "org.apache.hadoop.hdfs.DistributedFileSystem")
-
       logger.info("Read XML")
 
       val df = spark.read
@@ -48,18 +28,31 @@ object WikiExtractor {
 
       // re-partition data
       df
-          //.repartition( col("revision.timestamp") )
-          .repartition(30)
+        //.repartition( col("revision.timestamp") )
+        .repartition(30)
         .write.parquet(dataStore)
 
     } catch {
       case ex: Throwable => {
         logger.error(ex.getMessage)
-        logger.error(ex.getStackTrace.mkString(" "))
+        logger.error(ex.getCause.getMessage)
+        logger.error(ex.fillInStackTrace())
         spark.close()
       }
     }
-
     spark.close()
   }
+
+}
+
+object WikiExtractor {
+
+  def main(args: Array[String]): Unit = {
+
+    new WikiExtractor(){ self =>
+      exec( job )
+    }
+
+  }
+
 }
