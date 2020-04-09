@@ -11,3 +11,4 @@ project/target/
 lock.json
 terraform-provider-aws_v2.7.0_x4
 terraform.tfstate
+/buildcle

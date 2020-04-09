@@ -1,10 +1,12 @@
+package com.avel.data
+
 import org.apache.spark.SparkConf
 
-object Runner {
+object WikiExtractor {
 
-  import org.apache.spark.sql.SparkSession
   import com.databricks.spark.xml._
   import com.typesafe.config.ConfigFactory
+  import org.apache.spark.sql.SparkSession
 
   def main(args: Array[String]) : Unit = {
 

@@ -1,0 +1,1 @@
+java -cp wiki-extractor.jar com.avel.data.WikiExtractor -Dconfig.file=application.conf
