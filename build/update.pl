@@ -3,10 +3,10 @@ use LWP::Simple;
 use JSON::Parse 'parse_json';
 
 # Drop artifact in the current folder if present
-system("rm -f wikiextractor_latest.jar")
+system("rm -f wikiextractor_latest.jar");
 
-my $url = "http://192.168.1.8:8081/service/rest/v1/search/assets?maven.artifactId=wikiextractor_2.12";
-my $content = get($url);
+my $api_url = "http://192.168.1.8:8081/service/rest/v1/search/assets?maven.artifactId=wikiextractor_2.12";
+my $content = get($api_url);
 
 die "Can't GET $url" if (! defined $content);
 
@@ -25,5 +25,5 @@ foreach my $key ( keys %{ $json } ){
 
 # Download latest artifact
 if ($last_artifact ne "empty"){
-  system("curl $last_artifact -o wikiextractor_last.jar")
+  system("curl $last_artifact -o wikiextractor_latest.jar")
 }
