@@ -7,6 +7,7 @@ name := "wikiExtractor"
 scalaVersion := "2.12.10"
 
 val jarFileName = "wiki-extractor.jar"
+val jarFilePackageDependencies = s"${jarFileName.replace(".jar", "")}-dependencies.jar"
 
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.4.5"
 
@@ -26,8 +27,10 @@ assemblyJarName in assembly := jarFileName
 
 assemblyOutputPath in assembly := file(s"build/$jarFileName")
 
+assemblyOutputPath in assemblyPackageDependency := file(s"build/$jarFilePackageDependencies")
+
 assemblyOption in assembly :=
-  (assemblyOption in assembly).value.copy(includeScala = true, includeDependency = true)
+  (assemblyOption in assembly).value.copy(includeScala = false, includeDependency = false)
 
 test in assembly := {}
 
