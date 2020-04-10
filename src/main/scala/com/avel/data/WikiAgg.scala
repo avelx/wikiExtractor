@@ -2,6 +2,8 @@ package com.avel.data
 
 import com.avel.data.spark.BaseSpark
 
+import scala.util.Random
+
 class WikiAgg extends BaseSpark {
 
   def job(): Unit = {
@@ -14,13 +16,18 @@ class WikiAgg extends BaseSpark {
         .read
         .parquet(dataStore)
 
-      val filteredDf = df.filter( $"revision.text._VALUE".contains("SomeCriteria") )
+      val criteria = appConfig.getString("search.query")
+
+      val filteredDf = df.filter( $"revision.text._VALUE".contains(criteria) )
 
       logger.info("Persist result")
+      val stamp = Random.alphanumeric.take(10).mkString("")
+
+
       filteredDf
         .coalesce(1)
         .write
-          .json(s"$tempResult/data.json")
+          .json(s"$tempResult/data-$stamp.json")
 
     } catch {
       case ex: Throwable => {
