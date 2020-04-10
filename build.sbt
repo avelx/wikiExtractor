@@ -34,7 +34,7 @@ test in assembly := {}
 //publishTo := Some(Resolver.file("local-ivy", file("../artifacts /releases")))
 credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credentials")
 
-publishTo := Some("Sonatype Snapshots Nexus" at "http://192.168.1.8:8081/repository/jerusalem/")
+publishTo := Some("Sonatype Snapshots Nexus" at "http://192.168.1.8:8081/repository/jerusalemh/")
 
 val meta = """META.INF(.)*""".r
 
