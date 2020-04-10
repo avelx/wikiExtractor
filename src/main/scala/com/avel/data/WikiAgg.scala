@@ -14,7 +14,7 @@ class WikiAgg extends BaseSpark {
         .read
         .parquet(dataStore)
 
-      val filteredDf = df.filter( $"revision.text._VALUE".contains("SomCriteria") )
+      val filteredDf = df.filter( $"revision.text._VALUE".contains("SomeCriteria") )
 
       logger.info("Persist result")
       filteredDf

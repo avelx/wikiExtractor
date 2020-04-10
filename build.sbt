@@ -21,7 +21,7 @@ libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.12.1"
 
 libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.12.1"
 
-mainClass in assembly := Some("com.avel.data.WikiExtractor")
+//mainClass in assembly := Some("com.avel.data.WikiExtractor")
 
 assemblyJarName in assembly := jarFileName
 
