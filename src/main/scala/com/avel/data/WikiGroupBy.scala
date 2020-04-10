@@ -8,6 +8,8 @@ class WikiGroupBy extends BaseSpark {
 
   def job() : Unit = {
     val criteria = appConfig.getString("groupby.col")
+    logger.info(s"Criteria: $criteria")
+
     val df = spark
       .read
       .parquet(dataStore)
