@@ -42,11 +42,13 @@ trait BaseSpark {
     .hadoopConfiguration.set("fs.hdfs.impl", "org.apache.hadoop.hdfs.DistributedFileSystem")
 
   def exec(block : () => Unit ): Unit = {
-    val start = Calendar.getInstance().getTime().getTime
-    logger.info(s"Start time: $start")
     try {
-      logger.info("Read from DataStore")
+      val start = Calendar.getInstance().getTime().getTime
+      logger.info(s"Start time: $start")
       block()
+      val end = Calendar.getInstance().getTime().getTime
+      logger.info(s"End time: $end")
+      logger.info(s"Execution time: ${(end - start)/1000}")
     } catch {
       case ex: Throwable => {
         logger.error(ex.getMessage)
@@ -56,10 +58,6 @@ trait BaseSpark {
       }
     }
     spark.close()
-    block()
-    val end = Calendar.getInstance().getTime().getTime
-    logger.info(s"End time: $end")
-    logger.info(s"Execution time: ${(end - start)/1000}")
   }
 
 }
