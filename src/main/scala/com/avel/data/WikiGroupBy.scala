@@ -7,12 +7,13 @@ import scala.util.Random
 class WikiGroupBy extends BaseSpark {
 
   def job() : Unit = {
+    val criteria = appConfig.getString("groupby.col")
     val df = spark
       .read
       .parquet(dataStore)
 
     val filteredDf = df
-      .groupBy("revision.format")
+      .groupBy(criteria)
       .count()
 
     logger.info("Persist result")
