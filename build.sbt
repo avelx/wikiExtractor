@@ -1,5 +1,7 @@
 import sbtassembly.MergeStrategy
 
+organization        := "com.avel.data"
+
 name := "wikiExtractor"
 
 //version := "0.0.4"
