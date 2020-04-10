@@ -2,7 +2,7 @@ import sbtassembly.MergeStrategy
 
 name := "wikiExtractor"
 
-version := "0.0.4"
+//version := "0.0.4"
 
 scalaVersion := "2.12.10"
 
