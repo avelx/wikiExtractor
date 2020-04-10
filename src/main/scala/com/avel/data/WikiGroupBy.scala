@@ -6,7 +6,7 @@ import scala.util.Random
 
 class WikiGroupBy extends BaseSpark {
 
-  def job() : Unit = {
+  def job(): Unit = {
     val criteria = appConfig.getString("groupby.col")
     logger.info(s"Criteria: $criteria")
 
@@ -17,6 +17,8 @@ class WikiGroupBy extends BaseSpark {
     val filteredDf = df
       .groupBy(criteria)
       .count()
+      .sort(criteria)
+    
 
     logger.info("Persist result")
     val stamp = Random.alphanumeric.take(5).mkString("")
