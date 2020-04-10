@@ -6,31 +6,20 @@ import com.avel.data.spark.BaseSpark
 class WikiExtractor extends BaseSpark {
 
   def job() : Unit = {
-    try {
-      logger.info("Read XML")
+    logger.info("Read XML")
 
-      val df = spark.read
-        .format("xml")
-        .option("rowTag", "page")
-        .xml(source)
+    val df = spark.read
+      .format("xml")
+      .option("rowTag", "page")
+      .xml(source)
 
-      logger.info("Write to DataStore")
+    logger.info("Write to DataStore")
 
-      // re-partition data
-      df
-        //.repartition( col("revision.timestamp") )
-        .repartition(30)
-        .write.parquet(dataStore)
-
-    } catch {
-      case ex: Throwable => {
-        logger.error(ex.getMessage)
-        logger.error(ex.getCause.getMessage)
-        logger.error(ex.fillInStackTrace())
-        spark.close()
-      }
-    }
-    spark.close()
+    // re-partition data
+    df
+      //.repartition( col("revision.timestamp") )
+      .repartition(30)
+      .write.parquet(dataStore)
   }
 
 }

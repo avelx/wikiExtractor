@@ -6,38 +6,24 @@ import scala.util.Random
 
 class WikiGroupBy extends BaseSpark {
 
-  def job(): Unit = {
-    try {
-      logger.info("Read from DataStore")
+  def job() : Unit = {
+    val df = spark
+      .read
+      .parquet(dataStore)
 
-      import spark.implicits._
+    val filteredDf = df
+      .groupBy("revision.format")
+      .count()
 
-      val df = spark
-        .read
-        .parquet(dataStore)
+    logger.info("Persist result")
+    val stamp = Random.alphanumeric.take(5).mkString("")
 
-      val filteredDf = df
-          .groupBy("revision.format")
-          .count()
-
-      logger.info("Persist result")
-      val stamp = Random.alphanumeric.take(5).mkString("")
-
-      filteredDf
-        .coalesce(1)
-        .write
-          .json(s"$tempResult/data-groupby-$stamp.json")
-
-    } catch {
-      case ex: Throwable => {
-        logger.error(ex.getMessage)
-        logger.error(ex.getCause.getMessage)
-        logger.error(ex.fillInStackTrace())
-        spark.close()
-      }
-    }
-    spark.close()
+    filteredDf
+      .coalesce(1)
+      .write
+      .json(s"$tempResult/data-groupby-$stamp.json")
   }
+
 }
 
 object WikiGroupBy {

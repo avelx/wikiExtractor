@@ -44,6 +44,18 @@ trait BaseSpark {
   def exec(block : () => Unit ): Unit = {
     val start = Calendar.getInstance().getTime().getTime
     logger.info(s"Start time: $start")
+    try {
+      logger.info("Read from DataStore")
+      block()
+    } catch {
+      case ex: Throwable => {
+        logger.error(ex.getMessage)
+        logger.error(ex.getCause.getMessage)
+        logger.error(ex.fillInStackTrace())
+        spark.close()
+      }
+    }
+    spark.close()
     block()
     val end = Calendar.getInstance().getTime().getTime
     logger.info(s"End time: $end")
