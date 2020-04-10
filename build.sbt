@@ -2,7 +2,7 @@ import sbtassembly.MergeStrategy
 
 name := "wikiExtractor"
 
-version := "0.0.2"
+version := "0.0.4"
 
 scalaVersion := "2.12.10"
 
@@ -31,7 +31,7 @@ assemblyOption in assembly :=
 
 test in assembly := {}
 
-publishTo := Some(Resolver.file("local-ivy", file("build/releases")))
+publishTo := Some(Resolver.file("local-ivy", file("../artifacts /releases")))
 
 val meta = """META.INF(.)*""".r
 
