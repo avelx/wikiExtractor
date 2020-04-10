@@ -17,7 +17,7 @@ foreach my $key ( keys %{ $json } ){
   my $arr = ${$json}{$key};
   foreach my $e (@$arr) {
     my $url = ${$e}{"downloadUrl"};
-    if ($url =~ /wikiextractor_([0-9\.-]*)+\.jar/ig){
+    if ($url =~ /wikiextractor_([0-9\.-]*)+\.jar$/ig){
       $last_artifact = ${$e}{"downloadUrl"};
     }
   }
