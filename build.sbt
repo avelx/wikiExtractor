@@ -2,7 +2,7 @@ import sbtassembly.MergeStrategy
 
 name := "wikiExtractor"
 
-version := "0.0.1"
+version := "0.0.2"
 
 scalaVersion := "2.12.10"
 
@@ -31,10 +31,8 @@ assemblyOption in assembly :=
 
 test in assembly := {}
 
-//assemblyMergeStrategy in assembly := {
-//  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-//  case _ => MergeStrategy.first
-//}
+publishTo := Some(Resolver.file("local-ivy", file("build/releases")))
+
 val meta = """META.INF(.)*""".r
 
 assemblyMergeStrategy in assembly := {
