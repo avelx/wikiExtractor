@@ -31,7 +31,8 @@ assemblyOption in assembly :=
 
 test in assembly := {}
 
-publishTo := Some(Resolver.file("local-ivy", file("../artifacts /releases")))
+//publishTo := Some(Resolver.file("local-ivy", file("../artifacts /releases")))
+publishTo := Some("Sonatype Snapshots Nexus" at "http://192.168.1.8:8081/repository/jerusalem/")
 
 val meta = """META.INF(.)*""".r
 
