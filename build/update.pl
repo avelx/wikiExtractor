@@ -25,5 +25,6 @@ foreach my $key ( keys %{ $json } ){
 
 # Download latest artifact
 if ($last_artifact ne "empty"){
+  print "Try to download latest artifact: $last_artifact";
   system("curl $last_artifact -o wikiextractor_latest.jar")
 }
