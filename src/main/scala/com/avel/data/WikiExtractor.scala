@@ -1,19 +1,9 @@
 package com.avel.data
 
 import com.databricks.spark.xml._
-//import org.apache.spark.sql.functions.{col, udf}
 import com.avel.data.spark.BaseSpark
 
 class WikiExtractor extends BaseSpark {
-
-  def exec(block : () => Unit ): Unit = {
-    val start = System.nanoTime()
-    logger.info(s"Start time: $start")
-    block()
-    val end = System.nanoTime()
-    logger.info(s"End time: $end")
-    logger.info(s"Execution time: ${end - start}")
-  }
 
   def job() : Unit = {
     try {
