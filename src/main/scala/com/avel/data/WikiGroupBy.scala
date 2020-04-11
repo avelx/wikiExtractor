@@ -29,11 +29,11 @@ class WikiGroupBy extends BaseSpark {
     logger.info("Persist result")
     val stamp = Random.alphanumeric.take(5).mkString("")
 
-    filteredDf
-      .coalesce(1)
-      .write
-      .option("header", "true")
-      .text(s"$tempResult/data-groupby-$stamp.txt")
+//    filteredDf
+//      .coalesce(1)
+//      .write
+//      .option("header", "true")
+//      .text(s"$tempResult/data-groupby-$stamp.txt")
   }
 
 }
