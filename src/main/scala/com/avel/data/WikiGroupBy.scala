@@ -1,6 +1,7 @@
 package com.avel.data
 
 import com.avel.data.spark.BaseSpark
+import org.apache.avro.generic.GenericData.StringType
 
 import scala.util.Random
 
@@ -22,7 +23,8 @@ class WikiGroupBy extends BaseSpark {
       .groupBy(criteria)
       .count()
       .sort(criteria)
-        .withColumn("count", stringify( col("count") ))
+      .withColumn("count", col("count").cast("string") )
+        //.withColumn("count", stringify( col("count") ))
 
     filteredDf.printSchema()
 
