@@ -11,20 +11,21 @@ my $content = get($api_url);
 die "Can't GET $api_url" if (! defined $content);
 
 # Process JSON result
+my @artifacts = ();
 my $json = parse_json ($content);
-my $last_artifact = "empty";
 foreach my $key ( keys %{ $json } ){
   my $arr = ${$json}{$key};
   foreach my $e (@$arr) {
     my $url = ${$e}{"downloadUrl"};
     if ($url =~ /wikiextractor_([0-9\.-]*)+\.jar$/ig){
-      $last_artifact = ${$e}{"downloadUrl"};
+      push @artifacts, $url;
     }
   }
 }
 
+my @sorted_artifacts = sort @artifacts;
+my $last_artifact = pop @sorted_artifacts;
+
 # Download latest artifact
-if ($last_artifact ne "empty"){
-  print "Try to download latest artifact: $last_artifact";
-  system("curl $last_artifact -o wikiextractor_latest.jar")
-}
+print "Try to download latest artifact: $last_artifact";
+system("curl $last_artifact -o wikiextractor_latest.jar")
