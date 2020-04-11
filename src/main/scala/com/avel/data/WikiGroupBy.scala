@@ -36,7 +36,7 @@ class WikiGroupBy extends BaseSpark {
       .coalesce(1)
       .write
       .option("header", "true")
-      .text(s"$tempResult/data-groupby-$stamp.txt")
+      .csv(s"$tempResult/data-groupby-$stamp.csv")
   }
 
 }
