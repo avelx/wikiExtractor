@@ -21,7 +21,7 @@ class WikiGroupBy extends BaseSpark {
       .groupBy(criteria)
       .count()
       .sort(criteria)
-        .withColumn("count", stringify( col("countOfString") ))
+        .withColumn("count", stringify( col("count") ))
 
 
     logger.info("Persist result")
