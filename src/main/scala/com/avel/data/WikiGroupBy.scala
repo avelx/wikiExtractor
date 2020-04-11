@@ -17,13 +17,14 @@ class WikiGroupBy extends BaseSpark {
       .read
       .parquet(dataStore)
 
-    df.printSchema()
 
-//    val filteredDf = df
-//      .groupBy(criteria)
-//      .count()
-//      .sort(criteria)
+    val filteredDf = df
+      .groupBy(criteria)
+      .count()
+      .sort(criteria)
 //        .withColumn("count", stringify( col("count") ))
+
+    filteredDf.printSchema()
 
 
     logger.info("Persist result")
