@@ -18,7 +18,7 @@ class WikiGroupBy extends BaseSpark {
       .groupBy(criteria)
       .count()
       .sort(criteria)
-    
+
 
     logger.info("Persist result")
     val stamp = Random.alphanumeric.take(5).mkString("")
@@ -26,7 +26,8 @@ class WikiGroupBy extends BaseSpark {
     filteredDf
       .coalesce(1)
       .write
-      .json(s"$tempResult/data-groupby-$stamp.json")
+      .option("header", "true")
+      .text(s"$tempResult/data-groupby-$stamp.txt")
   }
 
 }
