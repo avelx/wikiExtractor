@@ -19,7 +19,9 @@ class WikiExtractor extends BaseSpark {
     df
       //.repartition( col("revision.timestamp") )
       .repartition(30)
-      .write.parquet(dataStore)
+      //.write.parquet(dataStore)
+      .write
+      .csv(s"$dataStore.json")
   }
 
 }
